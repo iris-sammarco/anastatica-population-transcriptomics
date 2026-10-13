@@ -84,18 +84,33 @@ Scripts for identifying and visualising functional categories associated with th
 - `03_zenith_GSEA.R` — Performs gene set enrichment analysis using `zenith`.
 - `03_zenith_GSEA_run.sh` — Shell script to run the GSEA analysis.
 
-## Requirements
+## Software environments and dependencies
 
-The analyses use a combination of Python, R, and shell scripts.
+The analyses were performed using two Mamba environments to manage software dependencies and package versions. The corresponding environment specifications are available in the [`environments/`](environments/) directory:
 
-The required software, packages, and dependencies vary between analysis steps. These may include:
+- [`dream_degs.yml`](environments/dream_degs.yml)
+- [`R.yml`](environments/R.yml)
 
-- **Python** for climate data extraction.
-- **R** and the relevant R/Bioconductor packages for statistical analyses, RNA-seq data processing, visualisation, and functional enrichment.
-- **Bash** for running the provided shell scripts.
-- Access to the relevant input data files and reference resources required by each analysis.
+To recreate an environment, run the following commands from the root of the repository:
 
-Please consult the individual scripts for package dependencies, input file requirements, and configuration settings. Package versions and software environments are documented where necessary to facilitate reproducibility.
+```bash
+mamba env create -f environments/dream_degs.yml
+mamba env create -f environments/R.yml
+```
+
+Activate the appropriate environment before running an analysis:
+
+```bash
+mamba activate dream_degs
+```
+
+```bash
+mamba activate R
+```
+
+Each analysis script includes instructions in its header specifying the environment and commands required to run it. Please consult these instructions before executing a script.
+
+The environment files specify the software dependencies and package versions used for the analyses. Additional input data and reference resources may be required to reproduce individual analyses.
 
 ## Running the analyses
 
