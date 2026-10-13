@@ -19,6 +19,8 @@ The repository is organised into six folders, corresponding to the main stages o
 | `05_gene_classification/` | Classification of genes into four classes (climate-only, range-only, climate-and-range, and non-associated) and visualisation of gene classes. |
 | `06_functional_enrichment/` | Functional overrepresentation analysis, Gene Ontology (GO) visualisation, and gene set enrichment analysis (GSEA) using `zenith`. |
 
+The environment files are located in environments/. Always activate the required environment before executing a script.
+
 ## Data and metadata
 
 The metadata required for the analyses are provided in the **Supplementary Materials of the associated manuscript**.
