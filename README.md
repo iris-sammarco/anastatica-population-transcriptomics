@@ -12,12 +12,12 @@ The repository is organised into six folders, corresponding to the main stages o
 
 | Folder | Description |
 |---|---|
-| `01_climate/` | Extraction, correlation analysis, and principal component analysis (PCA) of bioclimatic variables. |
+| `01_climate/` | Extraction, correlation analysis, and principal component analysis (PCA) of bioclimatic variables, and comparison of climatic variation between eastern and western populations. |
 | `02_rnaseq_data_processing/` | Preparation of sample metadata and RNA-seq data processing. |
-| `03_RDA/` | Redundancy analysis (RDA) to investigate isolation by distance (IBD), isolation by environment (IBE), and east–west differentiation, including visualisation. |
+| `03_RDA/` | Redundancy analysis (RDA) to investigate isolation by distance (IBD), isolation by environment (IBE), and east–west differentiation, including forward selection of climate PCs in partial RDAs. |
 | `04_models/` | Single, combined, and interaction models, followed by post-processing, quality control, and diagnostic analyses. |
 | `05_gene_classification/` | Classification of genes into four classes (climate-only, range-only, climate-and-range, and non-associated) and visualisation of gene classes. |
-| `06_functional_enrichment/` | Functional overrepresentation analysis, Gene Ontology (GO) visualisation, and gene set enrichment analysis (GSEA) using `zenith`. |
+| `06_functional_enrichment/` | Functional overrepresentation analysis, Gene Ontology (GO) visualisation, gene set enrichment analysis (GSEA) using `zenith`, and functional enrichment of East/West climate gene classes. |
 
 The environment files are located in environments/. Always activate the required environment before executing a script.
 
@@ -31,12 +31,13 @@ The scripts are grouped by analytical objective. The folder numbering provides a
 
 ### 1. Climate data analysis — `01_climate/`
 
-Scripts for extracting bioclimatic variables from WorldClim, assessing correlations among variables, and performing PCA.
+Scripts for extracting bioclimatic variables from WorldClim, assessing correlations among variables, performing PCA, and comparing climatic variation between eastern and western populations.
 
 - `01_extract_worldclim_bioclim.py` — Extracts bioclimatic variables from WorldClim.
 - `02_bioclimatic_correlations.r` — Assesses correlations among bioclimatic variables.
 - `03_PCA_bioclimatic_variables.r` — Performs PCA of bioclimatic variables.
 - `04_PCA_scores_loadings_plots.R` — Generates plots of PCA scores and loadings.
+- `05_East_West_climate_range.py` — Compares climatic variation between eastern and western populations.
 
 ### 2. RNA-seq data processing — `02_rnaseq_data_processing/`
 
@@ -46,14 +47,14 @@ Scripts for preparing the metadata and processing RNA-seq data.
 
 ### 3. Redundancy analysis — `03_RDA/`
 
-Scripts for investigating patterns of transcriptomic variation in relation to geographic and environmental factors, including IBD, IBE, and east–west differentiation.
+Scripts for investigating patterns of transcriptomic variation in relation to geographic and environmental factors, including IBD, IBE, east–west differentiation, and forward selection of climate PCs in partial RDAs.
 
 - `01_IBD_IBE_transcriptome_RDA.R` — Performs transcriptome-level RDA analyses of IBD and IBE.
 - `01_IBD_IBE_transcriptome_RDA_run.sh` — Shell script to run the corresponding R analysis.
 - `02_IBD_IBE_transcriptome_RDA_East_West.r` — Performs east–west comparisons using RDA.
 - `02_IBD_IBE_transcriptome_RDA_East_West_run.sh` — Shell script to run the corresponding R analysis.
-- `03_RDA_functional_enrichment_East_West.R` — Performs functional enrichment analyses associated with east–west RDA results.
-- `03_RDA_functional_enrichment_East_West_run.sh` — Shell script to run the corresponding R analysis.
+- `03_RDA_step_wise_selection.R` — Performs forward selection of climate PCs in the partial RDAs.
+- `03_RDA_step_wise_selection_run.sh` — Shell script to run the corresponding R analysis.
 - `04_RDA_plot.R` — Generates RDA visualisations.
 - `04_RDA_plot_run.sh` — Shell script to run the plotting script.
 
@@ -78,13 +79,15 @@ Scripts for classifying genes into climate-only, range-only, climate-and-range, 
 
 ### 6. Functional enrichment — `06_functional_enrichment/`
 
-Scripts for identifying and visualising functional categories associated with the analysed gene sets.
+Scripts for identifying and visualising functional categories associated with the analysed gene sets, including the East/West climate gene classes.
 
 - `01_overrepresentation.R` — Performs functional overrepresentation analysis.
 - `01_overrepresentation_run.sh` — Shell script to run the overrepresentation analysis.
 - `02_GO_dotplot.R` — Generates Gene Ontology (GO) dot plots.
 - `03_zenith_GSEA.R` — Performs gene set enrichment analysis using `zenith`.
 - `03_zenith_GSEA_run.sh` — Shell script to run the GSEA analysis.
+- `04_functional_enrichment_East_West.R` — Performs functional enrichment analysis of the East/West climate gene classes obtained from the differential-expression analysis (interaction model).
+- `04_functional_enrichment_East_West_run.sh` — Shell script to run the corresponding R analysis.
 
 ## Software environments and dependencies
 
