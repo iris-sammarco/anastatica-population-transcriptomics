@@ -3,11 +3,11 @@
 #PBS -l walltime=4:00:00
 #PBS -q default@pbs-m1.metacentrum.cz
 #PBS -l select=1:ncpus=2:mem=40gb:scratch_local=20gb
-#PBS -N 03_RDA_functional_enrichment_East_West
+#PBS -N 03_RDA_step_wise_selection
 #PBS -j oe
 
 # Usage:
-# qsub 03_RDA_functional_enrichment_East_West_run.sh
+# qsub 03_RDA_step_wise_selection_run.sh
 
 set -euo pipefail
 
@@ -24,4 +24,4 @@ mamba activate dream_degs
 export TMPDIR="${SCRATCHDIR}"
 
 # Run the script
-Rscript /Anastatica/scripts/03_RDA_functional_enrichment_East_West.R
+Rscript /Anastatica/scripts/03_RDA_step_wise_selection.R
