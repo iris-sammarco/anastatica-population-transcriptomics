@@ -51,7 +51,7 @@ Scripts for investigating patterns of transcriptomic variation in relation to ge
 
 - `01_IBD_IBE_transcriptome_RDA.R` — Performs transcriptome-level RDA analyses of IBD and IBE.
 - `01_IBD_IBE_transcriptome_RDA_run.sh` — Shell script to run the corresponding R analysis.
-- `02_IBD_IBE_transcriptome_RDA_East_West.r` — Performs east–west comparisons using RDA.
+- `02_IBD_IBE_transcriptome_RDA_East_West.r` — Performs East-West comparisons using RDA.
 - `02_IBD_IBE_transcriptome_RDA_East_West_run.sh` — Shell script to run the corresponding R analysis.
 - `03_RDA_step_wise_selection.R` — Performs forward selection of climate PCs in the partial RDAs.
 - `03_RDA_step_wise_selection_run.sh` — Shell script to run the corresponding R analysis.
