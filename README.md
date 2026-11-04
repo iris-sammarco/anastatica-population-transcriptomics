@@ -14,7 +14,7 @@ The repository is organised into six folders, corresponding to the main stages o
 |---|---|
 | `01_climate/` | Extraction, correlation analysis, and principal component analysis (PCA) of bioclimatic variables. |
 | `02_rnaseq_data_processing/` | Preparation of sample metadata and RNA-seq data processing. |
-| `03_RDA/` | Redundancy analysis (RDA) to investigate isolation by distance (IBD), isolation by environment (IBE), and east–west differentiation, including functional enrichment analyses and visualisation. |
+| `03_RDA/` | Redundancy analysis (RDA) to investigate isolation by distance (IBD), isolation by environment (IBE), and east–west differentiation, including visualisation. |
 | `04_models/` | Single, combined, and interaction models, followed by post-processing, quality control, and diagnostic analyses. |
 | `05_gene_classification/` | Classification of genes into four classes (climate-only, range-only, climate-and-range, and non-associated) and visualisation of gene classes. |
 | `06_functional_enrichment/` | Functional overrepresentation analysis, Gene Ontology (GO) visualisation, and gene set enrichment analysis (GSEA) using `zenith`. |
