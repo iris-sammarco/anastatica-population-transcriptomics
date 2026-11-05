@@ -4,20 +4,16 @@
 # AUTHOR: Iris Sammarco
 # DATE: 03/11/2026
 #
-# FORWARD SELECTION OF CLIMATE PCs IN THE PARTIAL RDAs
+# FORWARD SELECTION OF CLIMATE PCs IN THE PARTIAL RDA
+# (full dataset only)
 #
-# Model 1 (full dataset):
+# Model (full dataset):
 #   response ~ Climate_PC1_z + Climate_PC2_z + Climate_PC3_z
 #              + Condition(Salinity_z + selected overall dbMEMs)
 #
-# Model 2 (West only, salinity-adjusted):
-#   response ~ Climate_PC1_z + Climate_PC2_z + Climate_PC3_z
-#              + Condition(Salinity_z)
-#
-# For each model:
+# Steps:
 #   A. Manual forward selection (permutation-based, p-value criterion)
-#      - at every step, ALL candidate p-values / F / adj. R2 are saved,
-#        so you can see exactly how non-significant each PC is
+#      - at every step, all candidate p-values / F / adj. R2 are saved
 #   B. vegan::ordiR2step() (adjusted-R2 criterion + p-value),
 #      run as an independent cross-check
 #   C. Final model of the selected PCs (overall + marginal tests)
@@ -39,11 +35,6 @@ suppressPackageStartupMessages({
 
 main_output_dir <-
   "/Anastatica/RDA_transcriptome_analysis"
-
-metadata_file <-
-  "/Anastatica/metadata/population_metadata.csv"
-
-region_column <- "Site_of_distribution_range_2-level"
 
 step_output_dir <- file.path(main_output_dir, "step_selection")
 dir.create(step_output_dir, recursive = TRUE, showWarnings = FALSE)
@@ -122,7 +113,6 @@ run_forward_selection <- function(response, env, candidates, cond_names,
     }))
 
     cand_tbl <- cand_tbl |>
-      mutate(P_holm_within_step = p.adjust(P, method = "holm")) |>
       arrange(P, desc(F))
 
     candidate_log[[step]] <- cand_tbl
@@ -131,7 +121,6 @@ run_forward_selection <- function(response, env, candidates, cond_names,
     cat("\nStep", step, "- candidates (already in model:",
         best$already_selected, ")\n")
     print(as.data.frame(cand_tbl[, c("candidate", "F", "P",
-                                     "P_holm_within_step",
                                      "adjR2_if_added")]),
           row.names = FALSE)
 
@@ -230,13 +219,13 @@ run_forward_selection <- function(response, env, candidates, cond_names,
 main_objects_path <- file.path(main_output_dir, "RDA_complete_analysis_objects.rds")
 if (!file.exists(main_objects_path)) {
   stop("Could not find: ", main_objects_path,
-       "\nRun RDA_transcriptome_analysis.R first.")
+       "\nRun 01_IBD_IBE_transcriptome_RDA.R first.")
 }
 
-main_objects    <- readRDS(main_objects_path)
-rda_response    <- main_objects$rda_response
+main_objects     <- readRDS(main_objects_path)
+rda_response     <- main_objects$rda_response
 environment_data <- main_objects$environment_data
-population_ids  <- rownames(rda_response)
+population_ids   <- rownames(rda_response)
 
 environment_data <- environment_data[population_ids, , drop = FALSE]
 stopifnot(identical(rownames(environment_data), population_ids))
@@ -262,35 +251,9 @@ cat("Overall spatial dbMEMs used as conditions:",
     if (length(mem_names)) paste(mem_names, collapse = ", ") else "none", "\n")
 
 # ============================================================
-# 4. REGION ASSIGNMENT (for the West subset)
+# 4. RUN FORWARD SELECTION (full dataset)
 # ============================================================
 
-metadata <- as.data.frame(read_csv(metadata_file, show_col_types = FALSE))
-metadata$Population <- as.character(metadata$Population)
-
-region_lookup <- metadata |>
-  group_by(Population) |>
-  summarise(n_distinct_region = n_distinct(.data[[region_column]]),
-            Region = first(.data[[region_column]]),
-            .groups = "drop")
-
-if (any(region_lookup$n_distinct_region != 1)) {
-  stop("Some populations have missing or inconsistent region assignments.")
-}
-
-region_by_population <- region_lookup$Region[match(population_ids,
-                                                   region_lookup$Population)]
-if (anyNA(region_by_population)) stop("Region missing for some populations.")
-model_data$Region <- region_by_population
-
-west_ids <- population_ids[region_by_population == "West"]
-cat("West populations:", length(west_ids), "\n")
-
-# ============================================================
-# 5. RUN BOTH FORWARD SELECTIONS
-# ============================================================
-
-# Model 1: full dataset, climate | salinity + space
 res_full <- run_forward_selection(
   response   = rda_response,
   env        = model_data,
@@ -302,23 +265,11 @@ res_full <- run_forward_selection(
   alpha      = alpha_in
 )
 
-# Model 2: West only, climate | salinity
-res_west <- run_forward_selection(
-  response   = rda_response[west_ids, , drop = FALSE],
-  env        = model_data[west_ids, , drop = FALSE],
-  candidates = climate_candidates,
-  cond_names = salinity_predictor,
-  label      = "West_climate_given_salinity",
-  outdir     = step_output_dir,
-  nperm      = n_permutations,
-  alpha      = alpha_in
-)
-
 # ============================================================
-# 6. COMBINED SUMMARY
+# 5. SUMMARY
 # ============================================================
 
-summary_tbl <- bind_rows(res_full, res_west)
+summary_tbl <- res_full
 write_csv(summary_tbl, file.path(step_output_dir, "stepwise_selection_summary.csv"))
 
 cat("\n============================================================\n")
@@ -328,7 +279,7 @@ print(as.data.frame(summary_tbl))
 
 cat("\nNotes:\n")
 cat("- *_forward_all_candidate_tests.csv lists the P value of EVERY PC at every step.\n")
-cat("- P_holm_within_step corrects for the number of candidates tested at that step.\n")
-cat("- Forward-selection P values are NOT corrected for the selection procedure itself;\n")
-cat("  treat a PC retained after selection as exploratory, and report the full model too.\n")
+cat("- Forward-selection P values are NOT corrected for multiple testing or for the\n")
+cat("  selection procedure itself; treat a PC retained after selection as exploratory,\n")
+cat("  and report the full model too.\n")
 cat("Outputs in: ", step_output_dir, "\n", sep = "")
