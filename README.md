@@ -14,7 +14,7 @@ The repository is organised into six folders, corresponding to the main stages o
 |---|---|
 | `01_climate/` | Extraction, correlation analysis, and principal component analysis (PCA) of bioclimatic variables, and comparison of climatic variation between eastern and western populations. |
 | `02_rnaseq_data_processing/` | Preparation of sample metadata and RNA-seq data processing. |
-| `03_RDA/` | Redundancy analysis (RDA) to investigate isolation by distance (IBD), isolation by environment (IBE), and east–west differentiation, including forward selection of climate PCs in partial RDAs. |
+| `03_RDA/` | Redundancy analysis (RDA) to investigate isolation by distance (IBD), isolation by environment (IBE), and east–west differentiation, including forward selection of climate PCs in the partial RDA. |
 | `04_models/` | Single, combined, and interaction models, followed by post-processing, quality control, and diagnostic analyses. |
 | `05_gene_classification/` | Classification of genes into four classes (climate-only, range-only, climate-and-range, and non-associated) and visualisation of gene classes. |
 | `06_functional_enrichment/` | Functional overrepresentation analysis, Gene Ontology (GO) visualisation, gene set enrichment analysis (GSEA) using `zenith`, and functional enrichment of East/West climate gene classes. |
@@ -53,7 +53,7 @@ Scripts for investigating patterns of transcriptomic variation in relation to ge
 - `01_IBD_IBE_transcriptome_RDA_run.sh` — Shell script to run the corresponding R analysis.
 - `02_IBD_IBE_transcriptome_RDA_East_West.r` — Performs East-West comparisons using RDA.
 - `02_IBD_IBE_transcriptome_RDA_East_West_run.sh` — Shell script to run the corresponding R analysis.
-- `03_RDA_step_wise_selection.R` — Performs forward selection of climate PCs in the partial RDAs.
+- `03_RDA_step_wise_selection.R` — Performs forward selection of climate PCs in the partial RDA.
 - `03_RDA_step_wise_selection_run.sh` — Shell script to run the corresponding R analysis.
 - `04_RDA_plot.R` — Generates RDA visualisations.
 - `04_RDA_plot_run.sh` — Shell script to run the plotting script.
